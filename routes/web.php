@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Controllers\AdminDashboardController;
 use App\Http\Controllers\Auth\NewPasswordController;
+use App\Http\Controllers\CategoryController;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\UserController;
@@ -50,3 +52,11 @@ Route::post('/reset-password', [NewPasswordController::class, 'store'])
     ->name('password.update');
 
 Route::post('/logout', [UserController::class, 'logout'])->middleware('auth');
+
+Route::get('/dashboard', [AdminDashboardController::class, 'index'])
+    ->name('dashboard')
+    ->middleware(['auth', 'admin']);
+
+Route::prefix('dashboard')->name('dashboard.')->middleware(['auth', 'admin'])->group(function () {
+    Route::resource('categories', CategoryController::class);
+});

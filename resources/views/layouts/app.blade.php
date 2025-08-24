@@ -18,6 +18,11 @@
                         <li>
                             <a href="/" class="nav-link {{ request()->is('/') ? 'bg-gray-200' : '' }}">Начало</a>
                         </li>
+                        @if(Auth::check() && auth()->user()->is_admin)
+                            <li>
+                                <a href="/dashboard" class="nav-link {{ request()->is('dashboard') ? 'bg-gray-200' : '' }}">Администрация</a>
+                            </li>
+                        @endif
                     </ul>
                 </div>
 
