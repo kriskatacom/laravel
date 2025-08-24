@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Auth\NewPasswordController;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\UserController;
@@ -34,7 +35,18 @@ Route::get('/', function () {
 Route::get('/users/register', [UserController::class, 'showRegister'])->middleware("guest");
 Route::post('/users/register', [UserController::class, 'register'])->middleware("guest");
 
-Route::get('/users/login', [UserController::class, 'showLogin'])->middleware("guest");
+Route::get('/users/login', [UserController::class, 'showLogin'])->middleware("guest")->name("login");
 Route::post('/users/login', [UserController::class, 'login'])->middleware("guest");
+
+Route::get('/users/password-reset', [UserController::class, 'showPasswordReset'])->middleware('guest');
+Route::post('/users/password-reset', [UserController::class, 'passwordReset'])->middleware('guest');
+
+Route::get('/reset-password/{token}', [NewPasswordController::class, 'create'])
+    ->middleware('guest')
+    ->name('password.reset');
+
+Route::post('/reset-password', [NewPasswordController::class, 'store'])
+    ->middleware('guest')
+    ->name('password.update');
 
 Route::post('/logout', [UserController::class, 'logout'])->middleware('auth');

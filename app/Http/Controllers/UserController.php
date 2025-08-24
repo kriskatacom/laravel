@@ -5,12 +5,23 @@ namespace App\Http\Controllers;
 use Auth;
 use Illuminate\Http\Request;
 use App\Models\User;
+use Illuminate\Support\Facades\Password;
 
 class UserController extends Controller
 {
     public function showRegister(Request $request)
     {
         return view("users.register");
+    }
+
+    public function showLogin(Request $request)
+    {
+        return view("users.login");
+    }
+
+    public function showPasswordReset(Request $request)
+    {
+        return view("users.password-reset");
     }
 
     public function register(Request $request)
@@ -39,11 +50,6 @@ class UserController extends Controller
         return redirect("/users/login")->with("success", "Създаването на профила беше успешно!");
     }
 
-    public function showLogin(Request $request)
-    {
-        return view("users.login");
-    }
-
     public function login(Request $request)
     {
         $request->validate([
@@ -66,6 +72,24 @@ class UserController extends Controller
         return back()->withErrors([
             "email" => "Грешен имейл или парола.",
         ])->withInput($request->except("password"));
+    }
+
+    public function passwordReset(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email',
+        ], [
+            'email.required' => 'Моля, въведете имейл адрес.',
+            'email.email' => 'Въведеният имейл е невалиден.',
+        ]);
+
+        $status = Password::sendResetLink($request->only('email'));
+
+        if ($status === Password::RESET_LINK_SENT) {
+            return back()->with('success', 'Изпратихме ви линк за смяна на паролата на посочения имейл адрес.');
+        }
+
+        return back()->with('error', 'Не успяхме да намерим потребител с този имейл адрес.');
     }
 
     public function logout(Request $request)
