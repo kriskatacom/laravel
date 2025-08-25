@@ -30,6 +30,12 @@ class UserController extends Controller
         return view("admin.users.index", compact("users"));
     }
 
+    public function show(Request $request)
+    {
+        $user = User::find($request->id);
+        return view("admin.users.show", compact("user"));
+    }
+
     public function register(Request $request)
     {
         $request->validate([

@@ -6,6 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Laravel + TailwindCSS</title>
     @vite('resources/css/app.css')
+    @if (Str::contains(request()->path(), 'dashboard'))
+        @vite('resources/js/admin/app.js')
+    @endif
 </head>
 
 <body class="bg-gray-100">

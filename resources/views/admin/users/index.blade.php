@@ -16,6 +16,7 @@
                             <th class="font-medium border border-gray-300 px-4 py-2">Име</th>
                             <th class="font-medium border border-gray-300 px-4 py-2">Имейл</th>
                             <th class="font-medium border border-gray-300 px-4 py-2">Създаден на</th>
+                            <th class="font-medium text-right border border-gray-300 px-4 py-2">Опции</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -26,6 +27,9 @@
                                     <td class="border border-gray-300 px-4 py-2">{{ $user->name }}</td>
                                     <td class="border border-gray-300 px-4 py-2">{{ $user->email }}</td>
                                     <td class="border border-gray-300 px-4 py-2">{{ $user->created_at->translatedFormat('d F Y, H:i') }}</td>
+                                    <td class="border border-gray-300 px-4 py-2 text-right">
+                                        <x-action-dropdown :model="$user" route-prefix="dashboard.users" />
+                                    </td>
                                 </tr>
                             @endforeach
                         @else

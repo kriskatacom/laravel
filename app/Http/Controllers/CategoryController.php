@@ -35,7 +35,8 @@ class CategoryController extends Controller
 
     public function show($id)
     {
-
+        $category = Category::find($id);
+        return view("admin.categories.show", compact("category"));
     }
 
     public function edit($id)
@@ -48,8 +49,27 @@ class CategoryController extends Controller
 
     }
 
+    public function delete(Request $request)
+    {
+        $category = Category::find($request->id);
+        return view("admin.categories.delete", compact("category"));
+    }
+
     public function destroy($id)
     {
+        $category = Category::find($id);
 
+        if (!$category) {
+            return redirect()->route("dashboard.categories.index")
+                ->with("error", "Категорията не е намерена.");
+        }
+
+        if ($category->delete()) {
+            return redirect()->route("dashboard.categories.index")
+                ->with("success", "Категорията беше изтрита успешно.");
+        }
+
+        return redirect()->route("dashboard.categories.index")
+            ->with("error", "Възникна грешка при изтриване на категорията.");
     }
 }
