@@ -17,21 +17,38 @@ class CategoryController extends Controller
     public function create()
     {
         $categories = Category::all();
-        view("categories.create", compact("categories"));
+        return view("admin.categories.create", compact("categories"));
     }
 
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|unique|string|max:255',
+            'name' => 'required|string|max:255|unique:categories,name',
             'description' => 'nullable|string',
-            'image_url' => 'nullable|url',
             'parent_id' => 'nullable|exists:categories,id',
         ]);
 
-        Category::create($request->all());
+        $category = new Category();
+        $category->name = $request->name;
+        $category->description = $request->description;
+        $category->parent_id = $request->parent_id;
 
-        return redirect()->route('categories.index')->with('success', 'Категорията е създадена успешно.');
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            $imageName = time() . '_' . $image->getClientOriginalName();
+            $image->move(public_path('images/categories'), $imageName);
+            $category->image_url = '/images/categories/' . $imageName;
+        }
+
+        $category->save();
+
+        if ($request->action === 'save_and_index') {
+            return redirect()->route('dashboard.categories.index')
+                ->with('success', 'Категорията е създадена успешно.');
+        }
+
+        return redirect()->route('dashboard.categories.create')
+            ->with('success', 'Категорията е създадена успешно.');
     }
 
     public function show($id)

@@ -8,14 +8,19 @@
         <div class="w-full">
             <div class="mt-4 pb-4 px-5 border-b border-gray-300 flex justify-between items-center gap-5">
                 <h1 class="text-2xl">Категории</h1>
-                @if ($categories->count() > 0)
-                    <form action="{{ route('dashboard.categories.destroy-all') }}" method="POST"
-                        onsubmit="return confirm('Сигурни ли сте, че искате да изтриете всички категории?');">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" class="danger-button">Изриване на всички</button>
-                    </form>
-                @endif
+                <div class="flex justify-between items-center gap-5">
+                    <a href="{{ route('dashboard.categories.create') }}" class="primary-button">
+                        Създаване
+                    </a>
+                    @if ($categories->count() > 0)
+                        <form action="{{ route('dashboard.categories.destroy-all') }}" method="POST"
+                            onsubmit="return confirm('Сигурни ли сте, че искате да изтриете всички категории?');">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="danger-button">Изриване на всички</button>
+                        </form>
+                    @endif
+                </div>
             </div>
 
             <div class="p-5 text-lg">
