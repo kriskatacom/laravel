@@ -6,7 +6,17 @@
         @endcomponent
 
         <div class="w-full">
-            <h1 class="mt-4 pb-5 px-5 text-2xl border-b border-gray-300">Категории</h1>
+            <div class="mt-4 pb-4 px-5 border-b border-gray-300 flex justify-between items-center gap-5">
+                <h1 class="text-2xl">Категории</h1>
+                @if ($categories->count() > 0)
+                    <form action="{{ route('dashboard.categories.destroy-all') }}" method="POST"
+                        onsubmit="return confirm('Сигурни ли сте, че искате да изтриете всички категории?');">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="danger-button">Изриване на всички</button>
+                    </form>
+                @endif
+            </div>
 
             <div class="p-5 text-lg">
                 @if(session('success'))

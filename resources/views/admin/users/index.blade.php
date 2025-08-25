@@ -6,7 +6,15 @@
         @endcomponent
 
         <div class="w-full">
-            <h1 class="mt-4 pb-5 px-5 text-2xl border-b border-gray-300">Потребители</h1>
+            <div class="mt-4 pb-4 px-5 border-b border-gray-300 flex justify-between items-center gap-5">
+                <h1 class="text-2xl">Потребители</h1>
+                <form action="{{ route('dashboard.categories.destroy-all') }}" method="POST"
+                    onsubmit="return confirm('Сигурни ли сте, че искате да изтриете тази категория?');">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="danger-button">Изриване на всички</button>
+                </form>
+            </div>
 
             <div class="p-5 text-lg">
                 <table class="w-full border-collapse border border-gray-300 text-left">

@@ -70,5 +70,8 @@ Route::prefix('dashboard')->name('dashboard.')->middleware(['auth', 'admin'])->g
     Route::get('categories/{category}/edit', [CategoryController::class, 'edit'])->name('categories.edit');
     Route::get('categories/{category}/delete', [CategoryController::class, 'delete'])->name('categories.delete');
     
+    Route::put('categories/{category}/update', [CategoryController::class, 'update'])->name('categories.update');
+
+    Route::delete('/categories/delete-all', [CategoryController::class, 'destroyAll'])->name('categories.destroy-all');
     Route::delete('/categories/{category}', [CategoryController::class, 'destroy'])->name('categories.destroy');
 });

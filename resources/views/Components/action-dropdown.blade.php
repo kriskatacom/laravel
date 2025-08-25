@@ -8,11 +8,8 @@
 
     <div class="z-40 origin-top-right absolute right-0 mt-2 w-40 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 hidden" role="menu" aria-orientation="vertical" aria-labelledby="menu-button">
         <div class="py-1">
-            <!-- Преглед -->
             <a href="{{ route($routePrefix.'.show', $model->id) }}" class="text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100" role="menuitem">Преглед</a>
-            <!-- Редакция -->
             <a href="{{ route($routePrefix.'.edit', $model->id) }}" class="text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100" role="menuitem">Редакция</a>
-            <!-- Изтриване -->
             <form action="{{ route($routePrefix.'.destroy', $model->id) }}" method="POST" class="inline">
                 @csrf
                 @method('DELETE')
