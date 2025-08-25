@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Auth;
+use File;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Password;
@@ -30,10 +31,61 @@ class UserController extends Controller
         return view("admin.users.index", compact("users"));
     }
 
-    public function show(Request $request)
+    public function show($id)
     {
-        $user = User::find($request->id);
+        $user = User::find($id);
+
+        if (!$user) {
+            return redirect()
+                ->route("dashboard.users.index")
+                ->with("error", "Потребителят не беше намерен.");
+        }
+
         return view("admin.users.show", compact("user"));
+    }
+
+    public function edit($id)
+    {
+        $user = User::find($id);
+
+        if (!$user) {
+            return redirect()->route('dashboard.users.index')
+                ->with('error', 'Потребителят не е намерен.');
+        }
+
+        return view('admin.users.edit', compact('user'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255|unique:users,name,' . $id,
+            'description' => 'nullable|string',
+        ]);
+
+        $user = User::find($id);
+
+        if (!$user) {
+            return redirect()->route("dashboard.users.index")
+                ->with("error", "Потребителят не е намерен.");
+        }
+
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            $imageName = time() . '_' . $image->getClientOriginalName();
+            $image->move(public_path('images/users'), $imageName);
+            $user->image_url = '/images/users/' . $imageName;
+        }
+
+        $user->name = $request->name;
+        $user->save();
+
+        if ($request->input('action') === 'save_and_index') {
+            return redirect()->route('dashboard.users.index')
+                ->with('success', 'Данните на потребителт са актуализирани успешно.');
+        }
+
+        return redirect()->back()->with('success', 'Данните на потребителт са актуализирани успешно.');
     }
 
     public function register(Request $request)
@@ -112,5 +164,35 @@ class UserController extends Controller
         $request->session()->regenerateToken();
 
         return redirect('/')->with('success', 'Успешен изход!');
+    }
+
+    public function destroy($id)
+    {
+        $user = User::find($id);
+
+        if (!$user) {
+            return redirect()->route("dashboard.categories.index")
+                ->with("error", "Категорията не е намерена.");
+        }
+
+        if (Auth::user()->id === $user->id) {
+            return redirect()->route("dashboard.users.index")
+                ->with("error", "Не можете да изтриете себе си.");
+        }
+
+        if ($user->image_url) {
+            $imagePath = public_path($user->image_url);
+            if (File::exists($imagePath)) {
+                File::delete($imagePath);
+            }
+        }
+
+        if ($user->delete()) {
+            return redirect()->route("dashboard.users.index")
+                ->with("success", "Потребителят беше изтрит успешно.");
+        }
+
+        return redirect()->route("dashboard.users.index")
+            ->with("error", "Възникна грешка при изтриване на потребителя.");
     }
 }

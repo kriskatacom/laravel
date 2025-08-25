@@ -64,6 +64,8 @@ Route::prefix('dashboard')->name('dashboard.')->middleware(['auth', 'admin'])->g
     Route::get('users/{user}/edit', [UserController::class, 'edit'])->name('users.edit');
     Route::delete('users/{user}', [UserController::class, 'destroy'])->name('users.destroy');
 
+        Route::put('users/{user}/update', [UserController::class, 'update'])->name('users.update');
+
     // Categories
     Route::get('categories', [CategoryController::class, 'index'])->name('categories.index');
     Route::get('categories/create', [CategoryController::class, 'create'])->name('categories.create');

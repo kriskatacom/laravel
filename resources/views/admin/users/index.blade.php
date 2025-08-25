@@ -17,6 +17,18 @@
             </div>
 
             <div class="p-5 text-lg">
+                @if(session('success'))
+                    <div class="mb-5 rounded-lg bg-green-100 border border-green-400 text-green-700 px-4 py-3">
+                        {{ session('success') }}
+                    </div>
+                @endif
+
+                @if(session('error'))
+                    <div class="mb-5 rounded-lg bg-red-100 border border-red-400 text-red-700 px-4 py-3">
+                        {{ session('error') }}
+                    </div>
+                @endif
+                
                 <table class="w-full border-collapse border border-gray-300 text-left">
                     <thead class="bg-white">
                         <tr>
@@ -36,7 +48,11 @@
                                     <td class="border border-gray-300 px-4 py-2">{{ $user->email }}</td>
                                     <td class="border border-gray-300 px-4 py-2">{{ $user->created_at->translatedFormat('d F Y, H:i') }}</td>
                                     <td class="border border-gray-300 px-4 py-2 text-right">
-                                        <x-action-dropdown :model="$user" route-prefix="dashboard.users" />
+                                        @if (Auth::id() === $user->id)
+                                            <x-action-dropdown :model="$user" route-prefix="dashboard.users" :actions="['show', 'edit']" />
+                                        @else
+                                            <x-action-dropdown :model="$user" route-prefix="dashboard.users" :actions="['show', 'edit', 'delete']" />
+                                        @endif
                                     </td>
                                 </tr>
                             @endforeach
