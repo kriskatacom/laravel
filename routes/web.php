@@ -3,6 +3,7 @@
 use App\Http\Controllers\AdminDashboardController;
 use App\Http\Controllers\Auth\NewPasswordController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\UserController;
@@ -18,21 +19,8 @@ use App\Http\Controllers\UserController;
 |
 */
 
-Route::get('/', function () {
-    return view('index/home');
-});
-
-// Route::get('/users/register', function () {
-//     return view('users/register');
-// });
-
-// Route::get('/users/login', function () {
-//     return view('users/login');
-// });
-
-// Route::get('/users/password-reset', function () {
-//     return view('users/password-reset');
-// });
+Route::get("/", [HomeController::class, "index"])->name("home");
+Route::get("/categories/show/{id}", [HomeController::class, "show"])->name("categories.show");
 
 Route::get('/users/register', [UserController::class, 'showRegister'])->middleware("guest");
 Route::post('/users/register', [UserController::class, 'register'])->middleware("guest");
