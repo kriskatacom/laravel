@@ -10,9 +10,8 @@
         <li class="border-b border-gray-200">
             <a href="/dashboard/categories" class="block py-3 px-5 hover:bg-gray-100">Категории</a>
         </li>
-        <li class="border-b border-gray-200 flex items-center">
-            <a href="/dashboard/announcements" class="block py-3 px-5 hover:bg-gray-100">Обяви</a>
-            <span class="bg-gray-200 rounded-full pb-1 px-2">скоро</span>
+        <li class="border-b border-gray-200">
+            <a href="{{ route('dashboard.jobs.index') }}" class="block py-3 px-5 hover:bg-gray-100">Обяви</a>
         </li>
         <li class="border-b border-gray-200 flex items-center">
             <a href="/dashboard/settings" class="block py-3 px-5 hover:bg-gray-100">Настройки</a>

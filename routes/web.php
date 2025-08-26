@@ -4,6 +4,7 @@ use App\Http\Controllers\AdminDashboardController;
 use App\Http\Controllers\Auth\NewPasswordController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\JobController;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\UserController;
@@ -52,7 +53,7 @@ Route::prefix('dashboard')->name('dashboard.')->middleware(['auth', 'admin'])->g
     Route::get('users/{user}/edit', [UserController::class, 'edit'])->name('users.edit');
     Route::delete('users/{user}', [UserController::class, 'destroy'])->name('users.destroy');
 
-        Route::put('users/{user}/update', [UserController::class, 'update'])->name('users.update');
+    Route::put('users/{user}/update', [UserController::class, 'update'])->name('users.update');
 
     // Categories
     Route::get('categories', [CategoryController::class, 'index'])->name('categories.index');
@@ -67,4 +68,12 @@ Route::prefix('dashboard')->name('dashboard.')->middleware(['auth', 'admin'])->g
 
     Route::delete('/categories/delete-all', [CategoryController::class, 'destroyAll'])->name('categories.destroy-all');
     Route::delete('/categories/{category}', [CategoryController::class, 'destroy'])->name('categories.destroy');
+
+    // Jobs
+    Route::get('jobs', [JobController::class, 'index'])->name('jobs.index');
+    Route::get('jobs/{job}', [JobController::class, 'show'])->name('jobs.show');
+    Route::get('jobs/{job}/edit', [JobController::class, 'edit'])->name('jobs.edit');
+    Route::get('jobs/{job}/delete', [JobController::class, 'delete'])->name('jobs.destroy');
+
+    Route::delete('jobs/destroy-all', [JobController::class, 'destroyAll'])->name('jobs.destroy-all');
 });
