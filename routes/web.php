@@ -71,9 +71,14 @@ Route::prefix('dashboard')->name('dashboard.')->middleware(['auth', 'admin'])->g
 
     // Jobs
     Route::get('jobs', [JobController::class, 'index'])->name('jobs.index');
+    Route::get('jobs/create', [JobController::class, 'create'])->name('jobs.create');
     Route::get('jobs/{job}', [JobController::class, 'show'])->name('jobs.show');
     Route::get('jobs/{job}/edit', [JobController::class, 'edit'])->name('jobs.edit');
     Route::get('jobs/{job}/delete', [JobController::class, 'delete'])->name('jobs.destroy');
+
+    Route::put('jobs/{job}/update', [JobController::class, 'update'])->name('jobs.update');
+
+    Route::post('jobs', [JobController::class, 'store'])->name('jobs.store');
 
     Route::delete('jobs/destroy-all', [JobController::class, 'destroyAll'])->name('jobs.destroy-all');
 });
